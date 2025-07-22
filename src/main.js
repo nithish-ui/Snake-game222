@@ -9,7 +9,8 @@ app.innerHTML = `
   <div class="game-container">
     <div class="main-menu" id="mainMenu">
       <div class="menu-content">
-        <h1 class="game-title">SNAKE</h1>
+        <h1 class="game-title">Serpentine</h1>
+        <p class="game-subtitle">A Modern Classic</p>
         <div class="menu-buttons">
           <button class="menu-btn" id="classicMode">Classic Mode</button>
           <button class="menu-btn" id="timedMode">Timed Challenge</button>
@@ -101,7 +102,7 @@ app.innerHTML = `
     </div>
     
     <div class="game-header">
-      <h1 class="game-title">SNAKE</h1>
+      <h1 class="game-title-small">Serpentine</h1>
       <div class="game-stats">
         <div class="stat">
           <span class="stat-label">Score</span>

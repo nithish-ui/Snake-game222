@@ -174,15 +174,39 @@ body {
 }
 
 .game-title {
-  font-size: 3rem;
+  font-size: 2.8rem;
   font-weight: 900;
-  background: linear-gradient(45deg, #00ff88, #00ccff);
+  background: linear-gradient(135deg, #00ff88, #00ccff, #8a2be2);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  text-shadow: 0 0 30px rgba(0, 255, 136, 0.3);
+  text-shadow: 0 0 20px rgba(0, 255, 136, 0.2);
   margin-bottom: 20px;
-  letter-spacing: 0.2em;
+  letter-spacing: 0.15em;
+  text-transform: none;
+}
+
+.game-subtitle {
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.6);
+  font-weight: 400;
+  margin-top: -15px;
+  margin-bottom: 25px;
+  letter-spacing: 0.1em;
+  font-style: italic;
+}
+
+.game-title-small {
+  font-size: 1.8rem;
+  font-weight: 700;
+  background: linear-gradient(135deg, #00ff88, #00ccff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-shadow: 0 0 15px rgba(0, 255, 136, 0.2);
+  margin-bottom: 15px;
+  letter-spacing: 0.1em;
+  text-transform: none;
 }
 
 .game-stats {
