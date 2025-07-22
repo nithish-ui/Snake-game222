@@ -5,6 +5,7 @@ export class MenuSystem {
       boardSize: 'medium',
       theme: 'neon',
       sound: true,
+      wallBehavior: 'solid',
       controls: {
         up: 'ArrowUp',
         down: 'ArrowDown',
@@ -79,6 +80,11 @@ export class MenuSystem {
       this.currentSettings.sound = e.target.checked
       this.saveSettings()
     })
+    
+    document.getElementById('wallBehaviorSelect').addEventListener('change', (e) => {
+      this.currentSettings.wallBehavior = e.target.value
+      this.saveSettings()
+    })
 
     // Stats menu
     document.getElementById('backToMenuFromStats').addEventListener('click', () => {
@@ -138,6 +144,7 @@ export class MenuSystem {
     document.getElementById('boardSizeSelect').value = this.currentSettings.boardSize
     document.getElementById('themeSelect').value = this.currentSettings.theme
     document.getElementById('soundToggle').checked = this.currentSettings.sound
+    document.getElementById('wallBehaviorSelect').value = this.currentSettings.wallBehavior
     
     // Update control display
     document.getElementById('upKey').textContent = this.currentSettings.controls.up

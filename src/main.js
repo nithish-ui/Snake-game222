@@ -76,6 +76,13 @@ app.innerHTML = `
           <label>Sound:</label>
           <input type="checkbox" id="soundToggle" checked>
         </div>
+        <div class="setting-group">
+          <label>Wall Behavior:</label>
+          <select id="wallBehaviorSelect">
+            <option value="solid">Solid Walls (Modern)</option>
+            <option value="wrap">Wrap Around (Classic)</option>
+          </select>
+        </div>
         <div class="controls-config">
           <h3>Controls</h3>
           <div class="control-mapping">
