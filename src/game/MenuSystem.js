@@ -24,7 +24,20 @@ export class MenuSystem {
   }
 
   setupEventListeners() {
-    // Main menu buttons
+    // Main menu button
+    document.getElementById('playBtn').addEventListener('click', () => {
+      this.showModeSelection()
+    })
+    
+    document.getElementById('settingsBtn').addEventListener('click', () => {
+      this.showSettings()
+    })
+    
+    document.getElementById('statsBtn').addEventListener('click', () => {
+      this.showStats()
+    })
+
+    // Mode selection buttons
     document.getElementById('classicMode').addEventListener('click', () => {
       this.startGame('classic')
     })
@@ -37,12 +50,8 @@ export class MenuSystem {
       this.startGame('obstacle')
     })
     
-    document.getElementById('settingsBtn').addEventListener('click', () => {
-      this.showSettings()
-    })
-    
-    document.getElementById('statsBtn').addEventListener('click', () => {
-      this.showStats()
+    document.getElementById('backToMainFromModes').addEventListener('click', () => {
+      this.showMainMenu()
     })
 
     // Settings menu
@@ -100,6 +109,11 @@ export class MenuSystem {
     document.getElementById('mainMenu').classList.remove('hidden')
   }
 
+  showModeSelection() {
+    this.hideAllMenus()
+    document.getElementById('modeSelectionMenu').classList.remove('hidden')
+  }
+
   showSettings() {
     this.hideAllMenus()
     document.getElementById('settingsMenu').classList.remove('hidden')
@@ -114,6 +128,7 @@ export class MenuSystem {
 
   hideAllMenus() {
     document.getElementById('mainMenu').classList.add('hidden')
+    document.getElementById('modeSelectionMenu').classList.add('hidden')
     document.getElementById('settingsMenu').classList.add('hidden')
     document.getElementById('statsMenu').classList.add('hidden')
   }

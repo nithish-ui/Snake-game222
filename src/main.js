@@ -12,12 +12,34 @@ app.innerHTML = `
         <h1 class="game-title">Serpentine</h1>
         <p class="game-subtitle">A Modern Classic</p>
         <div class="menu-buttons">
-          <button class="menu-btn" id="classicMode">Classic Mode</button>
-          <button class="menu-btn" id="timedMode">Timed Challenge</button>
-          <button class="menu-btn" id="obstacleMode">Obstacle Course</button>
+          <button class="menu-btn" id="playBtn">Play</button>
           <button class="menu-btn" id="settingsBtn">Settings</button>
           <button class="menu-btn" id="statsBtn">Statistics</button>
         </div>
+      </div>
+    </div>
+    
+    <div class="mode-selection-menu hidden" id="modeSelectionMenu">
+      <div class="menu-content">
+        <h2>Choose Game Mode</h2>
+        <div class="mode-grid">
+          <div class="mode-card" id="classicMode">
+            <div class="mode-icon">🐍</div>
+            <h3>Classic</h3>
+            <p>Traditional Snake gameplay. Eat food, grow longer, avoid walls and yourself.</p>
+          </div>
+          <div class="mode-card" id="timedMode">
+            <div class="mode-icon">⏱️</div>
+            <h3>Timed Challenge</h3>
+            <p>Race against time! Score as much as possible in 60 seconds.</p>
+          </div>
+          <div class="mode-card" id="obstacleMode">
+            <div class="mode-icon">🧱</div>
+            <h3>Obstacle Course</h3>
+            <p>Navigate around obstacles while growing your snake. Extra challenge!</p>
+          </div>
+        </div>
+        <button class="menu-btn secondary" id="backToMainFromModes">Back</button>
       </div>
     </div>
     
