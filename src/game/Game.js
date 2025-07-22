@@ -173,6 +173,14 @@ export class Game {
     }
   }
 
+  placeNextPuzzleFood() {
+    const nextFood = this.puzzleLevel.getNextFoodPosition()
+    if (nextFood) {
+      this.food.x = nextFood.x
+      this.food.y = nextFood.y
+    }
+  }
+
   start() {
     this.gameState.setState('playing')
     this.gameStartTime = Date.now()
@@ -267,6 +275,11 @@ export class Game {
       if (head.x === this.food.x && head.y === this.food.y) {
         this.snake.grow()
         this.gameState.incrementScore()
+        
+        if (this.gameMode === 'puzzle') {
+          this.handlePuzzleFoodCollection()
+        }
+        
         this.foodEaten++
         this.streak++
         this.updateUI()
@@ -283,7 +296,7 @@ export class Game {
         this.placeFood()
         
         // Increase speed slightly (but not in easy mode)
-        if (this.settings.difficulty !== 'easy') {
+        if (this.settings.difficulty !== 'easy' && this.gameMode !== 'puzzle') {
           this.gameSpeed = Math.max(this.baseGameSpeed * 0.5, this.gameSpeed - 2)
         }
         
@@ -293,6 +306,15 @@ export class Game {
         }
       } else {
         this.streak = 0
+      }
+      
+      // Check AI food collision
+      if (this.aiSnake) {
+        const aiHead = this.aiSnake.getHead()
+        if (aiHead.x === this.food.x && aiHead.y === this.food.y) {
+          this.aiSnake.grow()
+          this.placeFood()
+        }
       }
       
       // Check collisions
@@ -312,17 +334,220 @@ export class Game {
     }
   }
 
+  handlePuzzleFoodCollection() {
+    this.foodCollected++
+    this.puzzleLevel.removeFood(this.food.x, this.food.y)
+    
+    if (this.puzzleLevel.isComplete(this.foodCollected)) {
+      // Level complete!
+      this.currentLevel++
+      this.soundManager?.play('levelUp')
+      
+      if (this.currentLevel <= 5) {
+        // Next level
+        setTimeout(() => {
+          this.setupPuzzleMode()
+          this.showOverlay(`Level ${this.currentLevel}`, `Moves: ${this.snake.movesLeft}`)
+          setTimeout(() => this.hideOverlay(), 2000)
+        }, 1000)
+      } else {
+        // All levels complete!
+        this.gameWon()
+      }
+    } else {
+      // Place next food
+      this.placeNextPuzzleFood()
+    }
+  }
+
   checkCollisions() {
     const head = this.snake.getHead()
     
-    // Wall collision - fixed boundary check
-    if (head.x < 0 || head.x >= this.tilesX || 
-        head.y < 0 || head.y >= this.tilesY) {
+    // Wall collision handling
+    if (this.settings.wallBehavior === 'wrap') {
+      // Wrap around walls (classic behavior)
+      if (head.x < 0) {
+        head.x = this.tilesX - 1
+      } else if (head.x >= this.tilesX) {
+        head.x = 0
+      }
+      
+      if (head.y < 0) {
+        head.y = this.tilesY - 1
+      } else if (head.y >= this.tilesY) {
+        head.y = 0
+      }
+    } else {
+      // Solid walls (modern behavior)
+      if (head.x < 0 || head.x >= this.tilesX || 
+          head.y < 0 || head.y >= this.tilesY) {
+        return true
+    
+        head.x = this.tilesX - 1
+      } else if (head.x >= this.tilesX) {
+        head.x = 0
+      }
+      
+      if (head.y < 0) {
+        head.y = this.tilesY - 1
+      } else if (head.y >= this.tilesY) {
+        head.y = 0
+      }
+    } else {
+      // Solid walls (modern behavior)
+      if (head.x < 0 || head.x >= this.tilesX || 
+          head.y < 0 || head.y >= this.tilesY) {
+        return true
+        this.gameOver()
+        return
+      }
+      
+        head.x = this.tilesX - 1
+      } else if (head.x >= this.tilesX) {
+        head.x = 0
+      }
+      
+      if (head.y < 0) {
+        head.y = this.tilesY - 1
+      } else if (head.y >= this.tilesY) {
+        head.y = 0
+      }
+    } else {
+      // Solid walls (modern behavior)
+      if (head.x < 0 || head.x >= this.tilesX || 
+          head.y < 0 || head.y >= this.tilesY) {
+        return true
+        head.x = this.tilesX - 1
+      } else if (head.x >= this.tilesX) {
+        head.x = 0
+      }
+      
+      if (head.y < 0) {
+        head.y = this.tilesY - 1
+      } else if (head.y >= this.tilesY) {
+        head.y = 0
+      }
+    } else {
+      // Solid walls (modern behavior)
+      if (head.x < 0 || head.x >= this.tilesX || 
+          head.y < 0 || head.y >= this.tilesY) {
+        return true
+        head.x = this.tilesX - 1
+      } else if (head.x >= this.tilesX) {
+        head.x = 0
+      }
+      
+      if (head.y < 0) {
+        head.y = this.tilesY - 1
+      } else if (head.y >= this.tilesY) {
+        head.y = 0
+      }
+    } else {
+      // Solid walls (modern behavior)
+      if (head.x < 0 || head.x >= this.tilesX || 
+          head.y < 0 || head.y >= this.tilesY) {
+        return true
+    }
+    // Wall collision handling
+    if (this.settings.wallBehavior === 'wrap') {
+      // Wrap around walls (classic behavior)
+      if (head.x < 0) {
+        head.x = this.tilesX - 1
+      } else if (head.x >= this.tilesX) {
+        head.x = 0
+      }
+      
+      if (head.y < 0) {
+        head.y = this.tilesY - 1
+      } else if (head.y >= this.tilesY) {
+        head.y = 0
+      }
+    } else {
+      // Solid walls (modern behavior)
+      if (head.x < 0 || head.x >= this.tilesX || 
+          head.y < 0 || head.y >= this.tilesY) {
+        return true
+    
+    // Add danger zones (levels 3+)
+    if (level >= 3) {
+      const dangerCount = Math.min(5, Math.floor(level / 2))
+      for (let i = 0; i < dangerCount; i++) {
+        let x, y
+        do {
+          x = Math.floor(Math.random() * this.tilesX)
+          y = Math.floor(Math.random() * this.tilesY)
+        } while (
+          this.snake.occupiesPosition(x, y) ||
+          this.obstacleManager.hasObstacle(x, y) ||
+          (x === this.food.x && y === this.food.y)
+        )
+        
+        this.dangerZones.push(new DangerZone(x, y, 300 + Math.random() * 200))
+      }
+    }
+    
+    // Obstacle collision
+    if (this.obstacleManager.hasObstacle(head.x, head.y)) {
+      const movingCount = Math.min(3, Math.floor(level / 3))
+      for (let i = 0; i < movingCount; i++) {
+        const startX = Math.floor(Math.random() * (this.tilesX - 4)) + 2
+        const startY = Math.floor(Math.random() * (this.tilesY - 4)) + 2
+        const endX = Math.floor(Math.random() * (this.tilesX - 4)) + 2
+        const endY = Math.floor(Math.random() * (this.tilesY - 4)) + 2
+        
+        this.movingObstacles.push(new MovingObstacle(startX, startY, endX, endY, 0.01 + level * 0.005))
+      }
+    }
+  }
+
+  setupPuzzleMode() {
+    this.puzzleLevel = new PuzzleLevel(this.currentLevel)
+    
+    // Reset snake to puzzle specifications
+    this.snake.reset(this.puzzleLevel.snakeStart.x, this.puzzleLevel.snakeStart.y)
+    
+    // Set fixed length
+    for (let i = 1; i < this.puzzleLevel.snakeLength; i++) {
+      this.snake.grow()
+    }
+    
+    // Set moves limit
+    this.snake.setMovesLeft(this.puzzleLevel.moves)
+    
+    // Set up obstacles
+    this.obstacleManager.clear()
+    this.puzzleLevel.obstacles.forEach(obs => {
+      this.obstacleManager.obstacles.push(obs)
+    })
+    
+    // Place first food
+    this.foodCollected = 0
+    this.placeNextPuzzleFood()
+  }
+
+  setupDuelMode() {
+    // Create AI snake on opposite side
+    this.aiSnake = new AISnake(this.tilesX - 6, this.tilesY - 6, this.tileSize)
+    this.placeFood()
+    }
+    
+    // Danger zone collision
+    if (this.dangerZones.some(dz => dz.isActive() && dz.x === head.x && dz.y === head.y)) {
       return true
     }
     
-    // Obstacle collision (for obstacle mode)
-    if (this.gameMode === 'obstacle' && this.obstacleManager.hasObstacle(head.x, head.y)) {
+    // Moving obstacle collision
+    if (this.movingObstacles.some(mo => mo.x === head.x && mo.y === head.y)) {
+      return true
+    }
+    
+    // AI snake collision
+    if (this.aiSnake && this.aiSnake.occupiesPosition(head.x, head.y)) {
+      return true
+    }
+    
+    // Check if AI snake collided with player
+    if (this.aiSnake && this.snake.occupiesPosition(this.aiSnake.getHead().x, this.aiSnake.getHead().y)) {
       return true
     }
     
@@ -349,7 +574,52 @@ export class Game {
     // Draw game objects
     this.food.draw(this.ctx)
     this.snake.draw(this.ctx)
+    
+    // Draw AI snake
+    if (this.aiSnake) {
+      this.aiSnake.draw(this.ctx)
+    }
+    
     this.particleSystem.draw(this.ctx)
+    
+    // Draw puzzle mode UI
+    if (this.gameMode === 'puzzle') {
+      this.drawPuzzleUI()
+    }
+    
+    // Draw obstacle mode level indicator
+    if (this.gameMode === 'obstacle') {
+      this.drawLevelIndicator()
+    }
+  }
+
+  drawPuzzleUI() {
+    this.ctx.save()
+    this.ctx.fillStyle = '#ffffff'
+    this.ctx.font = '16px Orbitron'
+    this.ctx.textAlign = 'left'
+    
+    const movesText = `Moves: ${this.snake.movesLeft || 0}`
+    const levelText = `Level: ${this.currentLevel}`
+    const foodText = `Food: ${this.foodCollected}/${this.puzzleLevel?.totalFood || 0}`
+    
+    this.ctx.fillText(levelText, 10, 25)
+    this.ctx.fillText(movesText, 10, 45)
+    this.ctx.fillText(foodText, 10, 65)
+    
+    this.ctx.restore()
+  }
+
+  drawLevelIndicator() {
+    this.ctx.save()
+    this.ctx.fillStyle = '#ffffff'
+    this.ctx.font = '16px Orbitron'
+    this.ctx.textAlign = 'right'
+    
+    const levelText = `Level: ${this.currentLevel}/10`
+    this.ctx.fillText(levelText, this.boardWidth - 10, 25)
+    
+    this.ctx.restore()
   }
 
   drawGrid() {
